@@ -1,0 +1,80 @@
+```groovy
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    repositories {
+        // Google Maven repository for Android dependencies
+        google()
+        // JCenter repository for additional libraries
+        jcenter()
+    }
+    dependencies {
+        // Gradle plugin for Android application
+        classpath 'com.android.tools.build:gradle:7.0.4' // Technical architecture: Utilize the latest stable version of the Android Gradle Plugin for optimal build performance.
+    }
+}
+
+allprojects {
+    repositories {
+        google() // Primary source for Android libraries.
+        jcenter() // Secondary source, can be phased out in future releases.
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+```
+
+```groovy
+// Module-level build.gradle file for the Android application.
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 31 // Best practice: Use the latest stable SDK version compatible with libraries.
+
+    defaultConfig {
+        applicationId "com.madhub.fbcustomerservicetoo" // Unique application ID that identifies the app in the Play Store.
+        minSdkVersion 21 // Technical approach: Setting a minimum SDK version that supports modern features while ensuring a broad user base.
+        targetSdkVersion 31 // Targeting the latest SDK version for best compatibility with newer Android features.
+        versionCode 1 // Versioning practice: Increment this for each release to ensure users get updates.
+        versionName "1.0.0" // User-readable version name.
+        resConfigs "en" // Ensuring resources are only packaged for English to optimize APK size.
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false // Implementation detail: Disable code shrinking for initial development to ease debugging.
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro' // Best practice: Use ProGuard for release builds to optimize code.
+        }
+        debug {
+            // Debug-specific configurations can be added here.
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.core:core-ktx:1.7.0' // Essential Android library to enhance Kotlin features, adhering to best practices for modern app development.
+    implementation 'androidx.appcompat:appcompat:1.4.0' // Provides backward-compatible features for UI components.
+    implementation 'com.google.android.material:material:1.4.0' // Material design components for a modern user interface experience.
+
+    // The below dependency is vital for integrating social media management features
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0' // Technical architecture: Retrofit for handling API calls, crucial for connecting to MadHub's automation services.
+
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0' // Gson converter for JSON parsing, ensuring smooth data handling.
+
+    // Dependency for scheduling tasks efficiently in the background.
+    implementation 'androidx.work:work-runtime-ktx:2.7.1' // Best practice: Use WorkManager for background tasks, which is important for ensuring reliability in operations like scheduling posts or managing customer interactions.
+
+    // Other libraries can be added here that support the functionalities of MadHub's automation capabilities.
+}
+
+// Note: The MadHub product integrates seamlessly with various social media platforms, enhancing user engagement through automated operations that can run on real devices, cloud phones, or emulators.
+```
+### Explanation of Build Configuration:
+- **Project Structure**: The build.gradle files are structured hierarchically, with the top-level file configuring repositories and plugins and the module-level file handling specific application settings.
+- **Dependencies**: Carefully chosen to support the application's core functionalities, from UI components to background processing, ensuring compliance with best practices for Android development.
+- **Versioning**: Clear versioning practices implemented for both the app and the SDK target to maintain a smooth upgrade path and compatibility.
+- **Resource Management**: English language resource configuration to optimize the build for specific market needs.
+
+This build configuration provides a solid foundation for developing the fb customer service tool within the MadHub framework, promoting efficient use of Android's capabilities for social media automation.
